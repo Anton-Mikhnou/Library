@@ -86,3 +86,9 @@ body{
     grid-auto-rows: minmax(300px, 350px);
     overflow-y: scroll;
 }
+
+dialog{
+    width: 200px;
+    height: 400px;
+    position: relative;
+}
