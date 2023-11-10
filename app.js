@@ -37,45 +37,84 @@ function addBookToLibrary() {
 form.addEventListener('submit', (e) => {
     e.preventDefault();
     addBookToLibrary();
-    updateDomLibrary();
+    // updateDomLibrary();
+    update(myLibrary)
     dialog.close();
     form.reset();
-    // console.log('1',myLibrary)    //====================================
+    console.log('1',myLibrary)    //====================================
+    console.log(workPlace)        //====================================
 })
 
 let card;
-
-function addCard() {
-    card = document.createElement('div');
-    card.classList.add('item');
-
-    const authorValue = document.createElement('div');
-    const titleValue = document.createElement('div');
-    const pagesValue = document.createElement('div'); 
-
-    authorValue.textContent = author.value;
-    titleValue.textContent = title.value;
-    pagesValue.textContent = pages.value;
-
-    card.appendChild(authorValue);
-    card.appendChild(titleValue);
-    card.appendChild(pagesValue);
-    workPlace.appendChild(card);
-}
 
 function deleteCard() {
     workPlace.removeChild(card);
 }
 
-let arrSlice = myLibrary.slice();
-function updateDomLibrary() {
-    let arrStart = myLibrary;
-    if (arrStart.length !== arrSlice.length){
-        // workPlace.innerHTML = '';
-        console.log('fir',myLibrary);
-        console.log('sl', myLibrary.slice());
-        addCard();
-    } 
-    return
+function deletBookFromLibrary() {
+    console.log(myLibrary.indexOf());
 }
+
+function addCard() {
+    let remove;
+    card = document.createElement('div');
+    card.classList.add('item');
+    
+    remove = document.createElement('button')
+    remove.classList.add('remove');
+    const authorValue = document.createElement('div');
+    const titleValue = document.createElement('div');
+    const pagesValue = document.createElement('div');
+
+    function value(array) {
+        for(let i =0; i < array.length; i++){
+            console.log('value:', arr[i].author)
+        }
+    }
+
+    authorValue.textContent = myLibrary[Book[author.value]];
+    titleValue.textContent = myLibrary[Book[title.value]];
+    pagesValue.textContent = myLibrary[Book[pages.value]];
+    remove.innerText = 'Remove'
+    
+    card.appendChild(authorValue);
+    card.appendChild(titleValue);
+    card.appendChild(pagesValue);
+    card.appendChild(remove);
+
+    workPlace.appendChild(card);
+    remove.addEventListener('click', () => {
+        // deleteCard();
+        // deletBookFromLibrary();
+        // console.log('1',myLibrary) //=======================
+
+    })
+}
+
+
+
+// let arrSlice = myLibrary.slice();
+// function updateDomLibrary() {
+//     let arrStart = myLibrary;
+//     if (arrStart.length !== arrSlice.length){
+//         // workPlace.innerHTML = '';
+//         console.log('fir',myLibrary);
+//         console.log('sl', myLibrary.slice());
+//         addCard();
+//     } 
+//     return
+// }
+
+function update(arr) {
+    workPlace.innerHTML = '';
+    for (let i = 0; i < arr.length; ++i){
+        if (arr.length === 0) {
+            return
+        } else{
+            addCard(arr[i]);
+        }
+    }
+}
+
+// update(myLibrary);
 
