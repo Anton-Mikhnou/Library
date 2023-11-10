@@ -32,16 +32,15 @@ function Book(author, title, pages) {
 // create instance 'Book'
 function addBookToLibrary() {
     myLibrary.push(new Book(author.value, title.value, pages.value))
-    addCard();
 }
 
 form.addEventListener('submit', (e) => {
     e.preventDefault();
-    // addCard();
-    addBookToLibrary()
+    addBookToLibrary();
+    updateDomLibrary();
     dialog.close();
     form.reset();
-    console.log('1',myLibrary)    //====================================
+    // console.log('1',myLibrary)    //====================================
 })
 
 let card;
@@ -65,23 +64,18 @@ function addCard() {
 }
 
 function deleteCard() {
-    
-}
-
-function addBookToDisplay() {
-    // if (myLibrary.includes(Book)){
-    //     addCard();
-    // }
-    myLibrary.map(addCard())
-}
-
-function deleteBookFromDisplay() {
-    myLibrary.pop()
     workPlace.removeChild(card);
 }
 
-const filter = document.querySelector('.filter');
-filter.addEventListener('click', () => {
-    deleteBookFromDisplay()
-    console.log('2',myLibrary)     //====================================
-})
+let arrSlice = myLibrary.slice();
+function updateDomLibrary() {
+    let arrStart = myLibrary;
+    if (arrStart.length !== arrSlice.length){
+        // workPlace.innerHTML = '';
+        console.log('fir',myLibrary);
+        console.log('sl', myLibrary.slice());
+        addCard();
+    } 
+    return
+}
+
