@@ -14,7 +14,7 @@ close.addEventListener('click', () => {
 
 const workPlace = document.querySelector('.workPlace');
 const author = document.getElementById('author');
-const title = document.getElementById('title');
+const bookTitle = document.getElementById('title');
 const pages = document.getElementById('pages');
 
 const form = document.getElementById('form');
@@ -37,15 +37,13 @@ function addBookToLibrary() {
 form.addEventListener('submit', (e) => {
     e.preventDefault();
     addBookToLibrary();
-    // updateDomLibrary();
-    update(myLibrary)
+    update(myLibrary);
     dialog.close();
     form.reset();
     console.log('1',myLibrary)    //====================================
     console.log(workPlace)        //====================================
 })
 
-let card;
 
 function deleteCard() {
     workPlace.removeChild(card);
@@ -55,66 +53,89 @@ function deletBookFromLibrary() {
     console.log(myLibrary.indexOf());
 }
 
-function addCard() {
-    let remove;
-    card = document.createElement('div');
+// function addCard() {
+    
+//     let card;
+//     let remove;
+//     card = document.createElement('div');
+//     card.classList.add('item');
+    
+//     remove = document.createElement('button')
+//     remove.classList.add('remove');
+//     for(let i = 0; i < myLibrary.length; i++){
+//         const authorValue = document.createElement('div');
+//         const titleValue = document.createElement('div');
+//         const pagesValue = document.createElement('div');
+
+//         authorValue.textContent = myLibrary[i].author;
+//         titleValue.textContent = myLibrary[i].title;
+//         pagesValue.textContent = myLibrary[i].pages;
+//     //
+        
+        
+//     //
+//         remove.innerText = 'Remove'
+        
+//         card.appendChild(authorValue);
+//         card.appendChild(titleValue);
+//         card.appendChild(pagesValue);
+//         card.appendChild(remove);
+    
+//         remove.addEventListener('click', () => {
+//             // deleteCard();
+//             // deletBookFromLibrary();
+//             // console.log('1',myLibrary) //=======================
+//         })
+//         workPlace.appendChild(card);
+//     }
+// }
+
+function addCard(arr) {
+
+    let card = document.createElement('div');
     card.classList.add('item');
     
-    remove = document.createElement('button')
+    let remove = document.createElement('button');
     remove.classList.add('remove');
-    const authorValue = document.createElement('div');
-    const titleValue = document.createElement('div');
-    const pagesValue = document.createElement('div');
 
-    function value(array) {
-        for(let i =0; i < array.length; i++){
-            console.log('value:', arr[i].author)
-        }
-    }
-
-    authorValue.textContent = myLibrary[Book[author.value]];
-    titleValue.textContent = myLibrary[Book[title.value]];
-    pagesValue.textContent = myLibrary[Book[pages.value]];
-    remove.innerText = 'Remove'
+    let authorValue = document.createElement('div');
+    let titleValue = document.createElement('div');
+    let pagesValue = document.createElement('div');
     
+    authorValue.textContent = arr.author;
+    titleValue.textContent = arr.title;
+    pagesValue.textContent = arr.pages;
+
+    remove.innerText = 'Remove';
+
     card.appendChild(authorValue);
     card.appendChild(titleValue);
     card.appendChild(pagesValue);
     card.appendChild(remove);
 
-    workPlace.appendChild(card);
     remove.addEventListener('click', () => {
-        // deleteCard();
-        // deletBookFromLibrary();
-        // console.log('1',myLibrary) //=======================
+        workPlace.removeChild(card);
+        deletBookFromLibrary();
+        
+        console.log('1', myLibrary);
+    });
 
-    })
+    workPlace.appendChild(card);
 }
-
-
-
-// let arrSlice = myLibrary.slice();
-// function updateDomLibrary() {
-//     let arrStart = myLibrary;
-//     if (arrStart.length !== arrSlice.length){
-//         // workPlace.innerHTML = '';
-//         console.log('fir',myLibrary);
-//         console.log('sl', myLibrary.slice());
-//         addCard();
-//     } 
-//     return
-// }
 
 function update(arr) {
     workPlace.innerHTML = '';
-    for (let i = 0; i < arr.length; ++i){
-        if (arr.length === 0) {
-            return
-        } else{
-            addCard(arr[i]);
-        }
+    for (let i = 0; i < arr.length; i++){
+        addCard(arr[i]);
     }
 }
 
 // update(myLibrary);
 
+
+
+// if(arr.author === author && arr.title === title && arr.pages === pages){
+//     let arr1 = arr.splice()
+//     let arr2 = arr.splice()
+
+// }
