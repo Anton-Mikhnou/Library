@@ -21,34 +21,77 @@ const form = document.getElementById('form');
 let myLibrary = [];
 
 // create 'Book'
-function Book(author, title, pages) {
+function Book (author, title, pages) {
     this.author = author;
     this.title = title;
     this.pages = pages;
 }
 
 // create instance 'Book'
-function addBookToLibrary() {
-    myLibrary.push(new Book(author.value, title.value, pages.value))
+function addBookToLibrary () {
+    myLibrary.push(new Book(author.value, title.value, pages.value, read.value))
 }
 
-function deleteCard() {
+function deleteCard () {
     workPlace.removeChild(card);
 }
 
-function findElemInArray(arr, indexEl) {
+function findElemInArray (arr, indexEl) {
     return arr.filter((elem, i) => i !== parseInt(indexEl.id));
 }
 
 let remove;
-
-function addCard(arr) {
+// let getSelectedValue
+function addCard (arr) {
     
     let card = document.createElement('div');
     card.classList.add('item');
+
+    let lighthouseContainer = document.createElement('div');
+    lighthouseContainer.classList.add('lighthouseContainer');
+
+    let lighthouse = document.createElement('div');
+    lighthouse.classList.add('lighthouseNoRead');
+    lighthouseContainer.appendChild(lighthouse);
+
     remove = document.createElement('button');
     remove.classList.add('remove');
+    remove.innerText = 'Remove';
+    let readR;
+    readR = document.createElement('button');
+    readR.classList.add('readR'); 
+    readR.innerText = 'Read'
+    // let inp = document.getElementById('read')
+
+    let getSelectedValue;
     
+    function checkButton() {    
+        getSelectedValue = document.querySelectorAll('input[name="status"]:checked');   
+        if(getSelectedValue.value === 'read') {   
+            lighthouse.classList.remove('lighthouseNoRead');
+            lighthouse.classList.add('lighthouseRead');
+            readR.innerText = 'No Read';
+        }   
+        else {   
+            lighthouse.classList.remove('lighthouseRead');
+            lighthouse.classList.add('lighthouseNoRead');
+            readR.innerText = 'Read';
+        }   
+    }    
+
+    readR.addEventListener('click', () => {
+        if (lighthouse.classList.contains('lighthouseNoRead')) {
+            lighthouse.classList.remove('lighthouseNoRead');
+            lighthouse.classList.add('lighthouseRead');
+            readR.innerText = 'No Read';
+        } else {
+            lighthouse.classList.remove('lighthouseRead');
+            lighthouse.classList.add('lighthouseNoRead');
+            readR.innerText = 'Read';
+        }
+    })
+    
+    // let index2 = readR;
     let index = remove;
     
     let authorValue = document.createElement('div');
@@ -59,13 +102,12 @@ function addCard(arr) {
     titleValue.textContent = arr.title;
     pagesValue.textContent = arr.pages;
     
-    remove.innerText = 'Remove';
-    
+    card.appendChild(lighthouseContainer);
     card.appendChild(authorValue);
     card.appendChild(titleValue);
     card.appendChild(pagesValue);
+    card.appendChild(readR);
     card.appendChild(remove);
-    
     remove.addEventListener('click', () => {
         myLibrary = findElemInArray(myLibrary, index);
         update(myLibrary);
@@ -73,17 +115,20 @@ function addCard(arr) {
     workPlace.appendChild(card);
 }
 
-function update(arr) {
+
+
+function update (arr) {
     workPlace.innerHTML = '';
     for (let i = 0; i < arr.length; i++){
-        addCard(arr[i]);
+        addCard (arr[i]);
         remove.id = `${[i]}`;
     }
 }
 
-form.addEventListener('submit', (e) => {
+form.addEventListener ('submit', (e) => {
     e.preventDefault();
     addBookToLibrary();
+    // checkButton()
     update(myLibrary);
     dialog.close();
     form.reset();
