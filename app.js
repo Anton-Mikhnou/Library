@@ -4,11 +4,11 @@ const close = document.querySelector('.close');
 
 plus.addEventListener('click', () => {
     dialog.showModal();
-})
+});
 
 close.addEventListener('click', () => {
     dialog.close();
-})
+});
 
 const workPlace = document.querySelector('.workPlace');
 const author = document.getElementById('author');
@@ -21,24 +21,19 @@ const form = document.getElementById('form');
 let myLibrary = [];
 
 // create 'Book'
-function Book (author, title, pages, status) {
+function Book(author, title, pages, status) {
     this.author = author;
     this.title = title;
     this.pages = pages;
-    // this.status = status;
+    this.status = status;
 }
 
 // create instance 'Book'
-function addBookToLibrary () {
-    
-    myLibrary.push(new Book(author.value, title.value, pages.value, read.value))
+function addBookToLibrary(status) {
+    myLibrary.push(new Book(author.value, title.value, pages.value, status));
 }
 
-function deleteCard () {
-    workPlace.removeChild(card);
-}
-
-function findElemInArray (arr, indexEl) {
+function findElemInArray(arr, indexEl) {
     return arr.filter((elem, i) => i !== parseInt(indexEl.id));
 }
 
@@ -46,15 +41,15 @@ function checkButton() {
     let radio = document.querySelectorAll('.stus');
     for (let i = 0; i < radio.length; i++) {
         if (radio[i].checked) {
-            return radio[i].value; // возвращаем значение выбранной радиокнопки
+            return radio[i].value;
         }
     }
+    return 'not_read_yet';
 }
 
 let remove;
 
-function addCard (arr) {
-    
+function addCard(arr) {
     let card = document.createElement('div');
     card.classList.add('item');
 
@@ -74,64 +69,61 @@ function addCard (arr) {
     remove = document.createElement('button');
     remove.classList.add('remove');
     remove.innerText = 'Remove';
-    let readR;
-    readR = document.createElement('button');
-    readR.classList.add('readR'); 
-    readR.innerText = 'Read'    
+    
+    let readR = document.createElement('button');
+    readR.classList.add('readR');
+    readR.innerText = arr.status === 'read' ? 'No Read' : 'Read';
 
     readR.addEventListener('click', () => {
         if (lighthouse.classList.contains('lighthouseNoRead')) {
             lighthouse.classList.remove('lighthouseNoRead');
             lighthouse.classList.add('lighthouseRead');
-            readR.innerText = 'No Read';
+            readR.innerText = 'Do Not Read';
         } else {
             lighthouse.classList.remove('lighthouseRead');
             lighthouse.classList.add('lighthouseNoRead');
             readR.innerText = 'Read';
         }
-    })
-    
+    });
+
     let index = remove;
-    
+
     let authorValue = document.createElement('div');
     let titleValue = document.createElement('div');
     let pagesValue = document.createElement('div');
-    
+
     authorValue.textContent = arr.author;
     titleValue.textContent = arr.title;
     pagesValue.textContent = arr.pages;
-    
+
     card.appendChild(lighthouseContainer);
     card.appendChild(authorValue);
     card.appendChild(titleValue);
     card.appendChild(pagesValue);
     card.appendChild(readR);
     card.appendChild(remove);
+
     remove.addEventListener('click', () => {
         myLibrary = findElemInArray(myLibrary, index);
         update(myLibrary);
     });
+
     workPlace.appendChild(card);
 }
 
-
-
-function update (arr) {
+function update(arr) {
     workPlace.innerHTML = '';
-    for (let i = 0; i < arr.length; i++){
-        addCard (arr[i]);
+    for (let i = 0; i < arr.length; i++) {
+        addCard(arr[i]);
         remove.id = `${[i]}`;
     }
 }
 
-form.addEventListener ('submit', (e) => {
+form.addEventListener('submit', (e) => {
     e.preventDefault();
-    const status = checkButton(); // получаем текущий статус
-    addBookToLibrary(status)
-    // addBookToLibrary();
-    // checkButton()
+    let status = checkButton();
+    addBookToLibrary(status);
     update(myLibrary);
     dialog.close();
     form.reset();
-    console.log(myLibrary)
-})
+});
