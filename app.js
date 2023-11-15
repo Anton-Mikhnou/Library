@@ -21,14 +21,16 @@ const form = document.getElementById('form');
 let myLibrary = [];
 
 // create 'Book'
-function Book (author, title, pages) {
+function Book (author, title, pages, status) {
     this.author = author;
     this.title = title;
     this.pages = pages;
+    // this.status = status;
 }
 
 // create instance 'Book'
 function addBookToLibrary () {
+    
     myLibrary.push(new Book(author.value, title.value, pages.value, read.value))
 }
 
@@ -40,8 +42,17 @@ function findElemInArray (arr, indexEl) {
     return arr.filter((elem, i) => i !== parseInt(indexEl.id));
 }
 
+function checkButton() {
+    let radio = document.querySelectorAll('.stus');
+    for (let i = 0; i < radio.length; i++) {
+        if (radio[i].checked) {
+            return radio[i].value; // возвращаем значение выбранной радиокнопки
+        }
+    }
+}
+
 let remove;
-// let getSelectedValue
+
 function addCard (arr) {
     
     let card = document.createElement('div');
@@ -52,6 +63,12 @@ function addCard (arr) {
 
     let lighthouse = document.createElement('div');
     lighthouse.classList.add('lighthouseNoRead');
+
+    if (arr.status === 'read') {
+        lighthouse.classList.remove('lighthouseNoRead');
+        lighthouse.classList.add('lighthouseRead');
+    }
+
     lighthouseContainer.appendChild(lighthouse);
 
     remove = document.createElement('button');
@@ -60,24 +77,7 @@ function addCard (arr) {
     let readR;
     readR = document.createElement('button');
     readR.classList.add('readR'); 
-    readR.innerText = 'Read'
-    // let inp = document.getElementById('read')
-
-    let getSelectedValue;
-    
-    function checkButton() {    
-        getSelectedValue = document.querySelectorAll('input[name="status"]:checked');   
-        if(getSelectedValue.value === 'read') {   
-            lighthouse.classList.remove('lighthouseNoRead');
-            lighthouse.classList.add('lighthouseRead');
-            readR.innerText = 'No Read';
-        }   
-        else {   
-            lighthouse.classList.remove('lighthouseRead');
-            lighthouse.classList.add('lighthouseNoRead');
-            readR.innerText = 'Read';
-        }   
-    }    
+    readR.innerText = 'Read'    
 
     readR.addEventListener('click', () => {
         if (lighthouse.classList.contains('lighthouseNoRead')) {
@@ -91,7 +91,6 @@ function addCard (arr) {
         }
     })
     
-    // let index2 = readR;
     let index = remove;
     
     let authorValue = document.createElement('div');
@@ -127,9 +126,12 @@ function update (arr) {
 
 form.addEventListener ('submit', (e) => {
     e.preventDefault();
-    addBookToLibrary();
+    const status = checkButton(); // получаем текущий статус
+    addBookToLibrary(status)
+    // addBookToLibrary();
     // checkButton()
     update(myLibrary);
     dialog.close();
     form.reset();
+    console.log(myLibrary)
 })
