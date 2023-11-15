@@ -11,9 +11,11 @@ close.addEventListener('click', () => {
 });
 
 const workPlace = document.querySelector('.workPlace');
-const author = document.getElementById('author');
-const bookTitle = document.getElementById('title');
-const pages = document.getElementById('pages');
+const authorInput = document.getElementById('author');
+const titleInput = document.getElementById('title');
+const pagesInput = document.getElementById('pages');
+const readRadio = document.getElementById('read');
+const notReadYetRadio = document.getElementById('not_read_yet');
 
 const form = document.getElementById('form');
 
@@ -29,25 +31,16 @@ function Book(author, title, pages, status) {
 }
 
 // create instance 'Book'
-function addBookToLibrary(status) {
-    myLibrary.push(new Book(author.value, title.value, pages.value, status));
+function addBookToLibrary() {
+    let status = readRadio.checked ? 'read' : 'not_read_yet';
+    myLibrary.push(new Book(authorInput.value, titleInput.value, pagesInput.value, status));
 }
 
 function findElemInArray(arr, indexEl) {
     return arr.filter((elem, i) => i !== parseInt(indexEl.id));
 }
 
-function checkButton() {
-    let radio = document.querySelectorAll('.stus');
-    for (let i = 0; i < radio.length; i++) {
-        if (radio[i].checked) {
-            return radio[i].value;
-        }
-    }
-    return 'not_read_yet';
-}
-
-let remove;
+let remove
 
 function addCard(arr) {
     let card = document.createElement('div');
@@ -70,19 +63,19 @@ function addCard(arr) {
     remove.classList.add('remove');
     remove.innerText = 'Remove';
     
-    let readR = document.createElement('button');
-    readR.classList.add('readR');
-    readR.innerText = arr.status === 'read' ? 'No Read' : 'Read';
+    let readBtn = document.createElement('button');
+    readBtn.classList.add('readBtn');
+    readBtn.innerText = arr.status === 'read' ? 'No Read' : 'Read';
 
-    readR.addEventListener('click', () => {
+    readBtn.addEventListener('click', () => {
         if (lighthouse.classList.contains('lighthouseNoRead')) {
             lighthouse.classList.remove('lighthouseNoRead');
             lighthouse.classList.add('lighthouseRead');
-            readR.innerText = 'Do Not Read';
+            readBtn.innerText = 'Do Not Read';
         } else {
             lighthouse.classList.remove('lighthouseRead');
             lighthouse.classList.add('lighthouseNoRead');
-            readR.innerText = 'Read';
+            readBtn.innerText = 'Read';
         }
     });
 
@@ -100,7 +93,7 @@ function addCard(arr) {
     card.appendChild(authorValue);
     card.appendChild(titleValue);
     card.appendChild(pagesValue);
-    card.appendChild(readR);
+    card.appendChild(readBtn);
     card.appendChild(remove);
 
     remove.addEventListener('click', () => {
@@ -115,14 +108,15 @@ function update(arr) {
     workPlace.innerHTML = '';
     for (let i = 0; i < arr.length; i++) {
         addCard(arr[i]);
-        remove.id = `${[i]}`;
+        if (remove) {
+            remove.id = `${[i]}`;
+        }
     }
 }
 
 form.addEventListener('submit', (e) => {
     e.preventDefault();
-    let status = checkButton();
-    addBookToLibrary(status);
+    addBookToLibrary();
     update(myLibrary);
     dialog.close();
     form.reset();
