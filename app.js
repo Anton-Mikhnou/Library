@@ -23,11 +23,13 @@ const form = document.getElementById('form');
 let myLibrary = [];
 
 // create 'Book'
-function Book(author, title, pages, status) {
-    this.author = author;
-    this.title = title;
-    this.pages = pages;
-    this.status = status;
+class Book {
+    constructor (author, title, pages, status) {
+        this.author = author;
+        this.title = title;
+        this.pages = pages;
+        this.status = status;
+    }
 }
 
 // create instance 'Book'
